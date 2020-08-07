@@ -16,12 +16,25 @@ public class SillonService {
     @Autowired
     SillonRepository repository;
 
-    public List<Sillon> getAllSillones() {
+    public List<Sillon> getAllSillones() { // en realidad solo obtiene los inactivos.
         List<Sillon> result = (List<Sillon>) repository.findAll();
 
         if(result.size() > 0) {
+            result.removeIf(Sillon::getActivo);
             return result;
         } else {
+            return new ArrayList<Sillon>();
+        }
+    }
+
+    public List<Sillon> getAllSillonesActivos(){
+        List<Sillon> result = (List<Sillon>) repository.findAll();
+
+        if (result.size() > 0) {
+            result.removeIf(sillon -> !sillon.getActivo());
+            return result;
+        }
+        else{
             return new ArrayList<Sillon>();
         }
     }
@@ -47,7 +60,7 @@ public class SillonService {
         sillon1.setId(id);
         sillon1.setTipo(sillon.getTipo());
         sillon1.setActivo(sillon.getActivo());
-        sillon1.setId_sala(sillon.getId_sala());
+        //sillon1.setId_sala(sillon.getId_sala());
         sillon1 = repository.save(sillon1);
         return sillon1;
     }

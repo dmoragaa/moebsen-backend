@@ -3,13 +3,16 @@ package com.example.moebs.controller;
 import com.example.moebs.exception.RecordNotFoundException;
 import com.example.moebs.model.Sillon;
 import com.example.moebs.service.SillonService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
@@ -25,8 +28,13 @@ public class SillonController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Sillon> getAllSillones(){
-        return service.getAllSillones();
+    public List<Sillon> getAllSillones(@RequestParam(value = "activo", defaultValue = "true") Boolean activo) {
+        if (activo){
+            return service.getAllSillonesActivos();
+        }
+        else{
+            return service.getAllSillones();
+        }
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,

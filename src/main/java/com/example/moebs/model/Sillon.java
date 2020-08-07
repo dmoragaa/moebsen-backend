@@ -12,21 +12,22 @@ public class Sillon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+	@Column
+	private String codigo;
     @Column
 	private String tipo;
     @Column
     private Boolean activo;
 
-    @Column
-	private Long id_sala;
+    //@Column
+	//private Long id_sala;
 
-	public Long getId_sala() {
+	/*public Long getId_sala() {
 		return id_sala;
 	}
 	public void setId_sala(Long id_sala) {
 		this.id_sala = id_sala;
-	}
+	}*/
 	public Long getId() {
 		return id;
 	}
@@ -45,5 +46,11 @@ public class Sillon {
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
 	}
-    
+
+	public String getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
 }
