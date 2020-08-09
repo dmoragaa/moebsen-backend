@@ -28,8 +28,13 @@ public class SillonController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Sillon> getAllSillones(@RequestParam(value = "activo", defaultValue = "true") Boolean activo) {
+    public List<Sillon> getAllSillones(@RequestParam(value = "activo", defaultValue = "true") Boolean activo,
+                                       @RequestParam(required = false) Optional<String> tipo) {
         if (activo){
+            if (tipo.isPresent()){
+                String type = tipo.get();
+                return service.getAllSillonesTipo(type);
+            }
             return service.getAllSillonesActivos();
         }
         else{

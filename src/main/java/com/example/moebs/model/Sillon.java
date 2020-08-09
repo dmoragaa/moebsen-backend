@@ -17,7 +17,7 @@ public class Sillon {
     @Column
 	private String tipo;
     @Column
-    private Boolean activo;
+    private Boolean activo = true;
 
     //@Column
 	//private Long id_sala;

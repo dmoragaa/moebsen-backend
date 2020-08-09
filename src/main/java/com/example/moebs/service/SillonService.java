@@ -49,6 +49,18 @@ public class SillonService {
             throw new RecordNotFoundException("No existe el Sillon");
         }
     }
+    public List<Sillon> getAllSillonesTipo(String type) {
+        List<Sillon> result = (List<Sillon>) repository.findAll();
+
+        if (result.size() > 0) {
+            result.removeIf(sillon -> !sillon.getActivo());
+            result.removeIf(sillon -> !sillon.getTipo().contentEquals(type));
+            return result;
+        }
+        else{
+            return new ArrayList<Sillon>();
+        }
+    }
 
     public Sillon createSillon(Sillon sillon){
         sillon = repository.save(sillon);
