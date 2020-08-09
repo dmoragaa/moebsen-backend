@@ -72,7 +72,7 @@ public class SillonService {
         sillon1.setId(id);
         sillon1.setTipo(sillon.getTipo());
         sillon1.setActivo(sillon.getActivo());
-        //sillon1.setId_sala(sillon.getId_sala());
+        sillon1.setCodigo(sillon.getCodigo());
         sillon1 = repository.save(sillon1);
         return sillon1;
     }
