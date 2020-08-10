@@ -3,14 +3,10 @@ package com.example.moebs.controller;
 import com.example.moebs.exception.RecordNotFoundException;
 import com.example.moebs.model.Sillon;
 import com.example.moebs.service.SillonService;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.ast.NullLiteral;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,11 +29,15 @@ public class SillonController {
         if (activo){
             if (tipo.isPresent()){
                 String type = tipo.get();
-                return service.getAllSillonesTipo(type);
+                return service.getAllSillonesTipo(type, true);
             }
             return service.getAllSillonesActivos();
         }
         else{
+            if (tipo.isPresent()){
+                String type = tipo.get();
+                return service.getAllSillonesTipo(type, false);
+            }
             return service.getAllSillones();
         }
     }
@@ -50,8 +50,8 @@ public class SillonController {
     }
 
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void deleteSillonById(@PathVariable("id") Long id) throws RecordNotFoundException {
-        service.deleteSillonById(id);
+    public Optional<Sillon> deleteSillonById(@PathVariable("id") Long id) throws RecordNotFoundException {
+        return service.deleteSillonById(id);
     }
 
     @PutMapping(path="/{id}", consumes= MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

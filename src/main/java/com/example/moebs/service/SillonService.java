@@ -49,16 +49,22 @@ public class SillonService {
             throw new RecordNotFoundException("No existe el Sillon");
         }
     }
-    public List<Sillon> getAllSillonesTipo(String type) {
+    public List<Sillon> getAllSillonesTipo(String type, Boolean activo) {
         List<Sillon> result = (List<Sillon>) repository.findAll();
 
         if (result.size() > 0) {
-            result.removeIf(sillon -> !sillon.getActivo());
-            result.removeIf(sillon -> !sillon.getTipo().contentEquals(type));
+            if(activo){
+                result.removeIf(sillon -> !sillon.getActivo());
+                result.removeIf(sillon -> !sillon.getTipo().contentEquals(type));
+            }
+            else{
+                result.removeIf(Sillon::getActivo);
+                result.removeIf(sillon -> !sillon.getTipo().contentEquals(type));
+            }
             return result;
         }
         else{
-            return new ArrayList<Sillon>();
+            return new ArrayList<>();
         }
     }
 
@@ -77,11 +83,12 @@ public class SillonService {
         return sillon1;
     }
 
-    public void deleteSillonById(Long id) throws RecordNotFoundException{
+    public Optional<Sillon> deleteSillonById(Long id) throws RecordNotFoundException{
         Optional<Sillon> sillon = repository.findById(id);
 
         if(sillon.isPresent()){
             repository.deleteById(id);
+            return repository.findById(id);
         }
         else {
             throw new RecordNotFoundException("No existe el Sillon");
